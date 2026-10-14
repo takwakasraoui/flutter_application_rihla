@@ -15,3 +15,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+Palier2:
+Q1:
+ Sans Expanded autour de la Column, l'avatar se place selon l'espace occupé par la Column. Il peut se rapprocher du texte, car la Column ne prend plus l'espace restant.
+Q2: prenom est final car sa valeur est définie à la création du widget et ne peut plus être modifiée ensuite.
+Q3:cs.primary utilise la couleur principale du thème.Colors.teal reste fixe, même si la seedColor change.
