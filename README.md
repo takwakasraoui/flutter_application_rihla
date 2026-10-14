@@ -30,3 +30,10 @@ Q5:
 Sans ClipRRect, l'image et le dégradé ne sont plus découpés selon les coins arrondis. Les coins peuvent donc apparaître carrés.
 Q6:
 Pour laisser de la place au bouton à droite.
+
+Palier4:
+Q7:
+ Expanded donne à la Column la largeur disponible.
+Ainsi, Spacer peut pousser le prix vers la droite.
+Q8:
+ Il suffit d'ajouter une destination dans le fichier lib/data/destinations.dart.
