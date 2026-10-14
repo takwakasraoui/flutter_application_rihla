@@ -21,3 +21,12 @@ Q1:
  Sans Expanded autour de la Column, l'avatar se place selon l'espace occupé par la Column. Il peut se rapprocher du texte, car la Column ne prend plus l'espace restant.
 Q2: prenom est final car sa valeur est définie à la création du widget et ne peut plus être modifiée ensuite.
 Q3:cs.primary utilise la couleur principale du thème.Colors.teal reste fixe, même si la seedColor change.
+
+
+Palier3:
+Q4:
+ Si DecoratedBox est placé en premier, le dégradé apparaît derrière l'image. L'image peut alors cacher le dégradé, car les enfants suivants du Stack sont dessinés au-dessus.
+Q5: 
+Sans ClipRRect, l'image et le dégradé ne sont plus découpés selon les coins arrondis. Les coins peuvent donc apparaître carrés.
+Q6:
+Pour laisser de la place au bouton à droite.

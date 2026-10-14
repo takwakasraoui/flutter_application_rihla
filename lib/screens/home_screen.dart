@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../widgets/home_header.dart';
 import '../widgets/search_box.dart';
+import '../widgets/hero_banner.dart';
+import '../data/destinations.dart';
 class HomeScreen extends StatelessWidget { 
   const HomeScreen({super.key});
   @override Widget build(BuildContext context) {
@@ -12,6 +14,8 @@ class HomeScreen extends StatelessWidget {
           const HomeHeader(prenom: 'takwa'),
           const SizedBox(height: 20),
           const SearchBox(),
+          const SizedBox(height: 20),
+          HeroBanner(destination: destinations.first),
         
         ], 
         ),
