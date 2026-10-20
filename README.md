@@ -37,3 +37,13 @@ Q7:
 Ainsi, Spacer peut pousser le prix vers la droite.
 Q8:
  Il suffit d'ajouter une destination dans le fichier lib/data/destinations.dart.
+
+Palier 5:
+Q9: 
+Sans setState(), _categorie change en mémoire,
+mais l'écran ne se met pas automatiquement à jour.
+Q10:
+ Le getter _filtrees met à jour la liste selon la catégorie choisie.
+Q11:
+HeroBanner ne change pas selon la catégorie choisie.
+
