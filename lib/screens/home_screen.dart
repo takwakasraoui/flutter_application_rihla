@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _categorie = 'Tout';
+  int _onglet = 0;
   List<Destination> get _filtrees {
     if (_categorie == 'Tout') {
       return destinations;
@@ -29,8 +30,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   @override Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea( 
+        return Scaffold(
+        body: _onglet == 0
+            ? _construireAccueil()
+            : const Center(
+                child: Text('Bientôt disponible'),
+              ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _onglet,
+          onDestinationSelected: (index) {
+            setState(() {
+              _onglet = index;
+            });
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.explore_outlined),
+              selectedIcon: Icon(Icons.explore),
+              label: 'Explorer',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.favorite_border),
+              selectedIcon: Icon(Icons.favorite),
+              label: 'Favoris',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
+              label: 'Profil',
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget _construireAccueil() {
+    return  SafeArea( 
         child: ListView( padding: const EdgeInsets.all(20),
         children: [ 
           //const Text('Takwa'),
@@ -73,6 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
         
         ], 
         ),
-        ), ); 
+    );
+    
+    
     }
+
+
 }
