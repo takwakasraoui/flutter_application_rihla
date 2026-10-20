@@ -67,7 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           HeroBanner(destination: destinations.first),
           for (final d in _filtrees)
-            DestinationCard(destination: d),
+            DestinationCard(
+              key:ValueKey(d.nom),
+              destination: d),
         
         ], 
         ),

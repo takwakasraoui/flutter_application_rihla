@@ -47,3 +47,6 @@ Q10:
 Q11:
 HeroBanner ne change pas selon la catégorie choisie.
 
+Palier6:
+Exercice : ValueKey(d.nom) permet à Flutter d'associer l'état à la bonne carte lors du filtrage.Sans Key, l'état peut être associé à une autre carte
+
