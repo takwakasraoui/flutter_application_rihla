@@ -57,3 +57,12 @@ Q2:
 DetailScreen reçoit destination avec un paramètre.C'est le passage de paramètres utilisé au TP3.
 Q3:
 Sans clipBehavior, les coins arrondis ne découpent plus correctement le contenu qui dépasse de la carte.
+
+Palier3:
+Q1:
+validate() vérifie tous les champs. Elle renvoie true si tout est valide, sinon false.
+Q2:
+inputFormatters : contrôle la saisie pendant que l'utilisateur écrit (chiffres uniquement, maximum 8 chiffres).
+validator : vérifie si la valeur saisie est correcte lorsque le formulaire est validé et affiche un message d'erreur si nécessaire.
+Q3:
+dispose() libère les ressources des contrôleurs pour éviter les fuites de mémoire.
