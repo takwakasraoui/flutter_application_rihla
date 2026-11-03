@@ -66,3 +66,9 @@ inputFormatters : contrôle la saisie pendant que l'utilisateur écrit (chiffres
 validator : vérifie si la valeur saisie est correcte lorsque le formulaire est validé et affiche un message d'erreur si nécessaire.
 Q3:
 dispose() libère les ressources des contrôleurs pour éviter les fuites de mémoire.
+Palier4:
+Q1:
+Parce que l'utilisateur doit choisir une date dans le calendrier. Sans readOnly, il pourrait saisir manuellement un texte ou une date invalide.
+Q2:
+Parce que _total est un getter : il recalcule sa valeur à partir de _prixParPersonne et du nombre de voyageurs chaque fois qu'on y accède. setState provoque la reconstruction de l'écran.
+Q3:

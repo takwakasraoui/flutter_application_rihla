@@ -23,6 +23,17 @@ class ReservationScreen extends StatefulWidget {
       final _nomCtrl = TextEditingController();
       final _emailCtrl = TextEditingController();
       final _telCtrl = TextEditingController();
+      final _dateCtrl = TextEditingController();
+      DateTime? _date;               // null tant qu'aucune date n'est choisie
+      String _formule = 'Essentiel';
+      bool _conditions = false;
+        
+      int get _prixParPersonne => _formule == 'Confort'
+            ? (widget.destination.prix * 1.3).round()
+            : widget.destination.prix;
+        
+      int get _total => _prixParPersonne * widget.voyageurs;
+      AutovalidateMode _autoValidation = AutovalidateMode.disabled;
     
       @override
       void dispose() {
@@ -30,6 +41,7 @@ class ReservationScreen extends StatefulWidget {
         _nomCtrl.dispose();
         _emailCtrl.dispose();
         _telCtrl.dispose();
+        _dateCtrl.dispose();
         super.dispose();
       }
     
@@ -77,19 +89,56 @@ class ReservationScreen extends StatefulWidget {
         //          longueur différente de 8 -> '8 chiffres attendus'
       }
     
-      void _valider() {
-        if (!_formKey.currentState!.validate()) return;
-        // Provisoire : sera remplacé au palier 5
+     void _valider() {
+        if (!_formKey.currentState!.validate()) {
+          setState(() {
+            _autoValidation = AutovalidateMode.onUserInteraction;
+          });
+          return;
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Formulaire valide')),
         );
       }
+
+
+
+
+      Future<void> _choisirDate() async {
+          final demain = DateTime.now().add(const Duration(days: 1));
+          final choisie = await showDatePicker(
+            context: context,
+            initialDate: _date ?? demain,
+            firstDate: demain,
+            lastDate: DateTime.now().add(const Duration(days: 365)),
+            helpText: 'Date de départ',
+          );
+          if (choisie == null) return;
+          setState(() {
+            _date = choisie;
+            _dateCtrl.text =
+                '${choisie.day.toString().padLeft(2, '0')}/'
+                '${choisie.month.toString().padLeft(2, '0')}/'
+                '${choisie.year}';
+          });
+          // TODO 1 : si l'utilisateur annule (null), ne rien faire
+          // TODO 2 : avec setState, mémoriser la date dans _date et écrire
+          //          'jj/mm/aaaa' dans _dateCtrl.text (padLeft(2, '0'))
+        }
+        
+      
+      
+
+
+
     
       @override
       Widget build(BuildContext context) {
         return Scaffold(
           appBar: AppBar(title: const Text('Réserver')),
           body: Form(
+            autovalidateMode: _autoValidation,
             key: _formKey,
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -146,6 +195,44 @@ class ReservationScreen extends StatefulWidget {
                     ],
                     validator: _validerTel,
                   ),
+                    TextFormField(
+                      controller: _dateCtrl,
+                      readOnly: true,          // pas de clavier
+                      onTap: _choisirDate,     // on ouvre le calendrier
+                      decoration: _deco('Date de départ', Icons.calendar_month_outlined),
+                      validator: (_) => _date == null ? 'Choisissez une date' : null,
+                    ),
+                     const SizedBox(height: 16),
+                    SegmentedButton<String>(
+                        segments: const [
+                          ButtonSegment(
+                            value: 'Essentiel',
+                            label: Text('Essentiel'),
+                            icon: Icon(Icons.backpack_outlined),
+                          ),
+                          ButtonSegment(
+                            value: 'Confort',
+                            label: Text('Confort +30 %'),
+                            icon: Icon(Icons.hotel_outlined),
+                          ),
+                        ],
+                        selected: {_formule},
+                        onSelectionChanged: (choix) {
+                          setState(() {
+                            _formule = choix.first;
+                          });
+                        },
+                      ),
+                       const SizedBox(height: 16),
+
+                      CheckboxListTile(
+                        value: _conditions,
+                        onChanged: (v) => setState(() => _conditions = v ?? false),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text("J'accepte les conditions d'annulation"),
+                        subtitle: const Text("Annulation gratuite jusqu'à 48 h avant"),
+                      ),
                     
                   // TODO 5 : champ E-mail (clavier emailAddress)
                   // TODO 6 : champ Téléphone (clavier phone, chiffres seulement,
@@ -156,10 +243,24 @@ class ReservationScreen extends StatefulWidget {
           ),
               bottomNavigationBar: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: FilledButton.icon(
-                    onPressed: _valider,
-                    icon: const Icon(Icons.check),
-                    label: const Text('Confirmer'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('$_prixParPersonne DT × ${widget.voyageurs}'),
+                      Text(
+                        '$_total DT',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      FilledButton.icon(
+                        onPressed: _conditions ? _valider : null,
+                        icon: const Icon(Icons.check),
+                        label: const Text('Confirmer'),
+                      ),
+                    ],
                   ),
                 ),
           // TODO 7 : bottomNavigationBar avec un FilledButton.icon « Confirmer »
