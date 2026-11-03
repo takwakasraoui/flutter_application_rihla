@@ -97,9 +97,19 @@ class ReservationScreen extends StatefulWidget {
           return;
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Formulaire valide')),
+          final reservation = Reservation(
+          destination: widget.destination,
+          nom: _nomCtrl.text.trim(),
+          email: _emailCtrl.text.trim(),
+          telephone: _telCtrl.text.trim(),
+          dateDepart: _date!,
+          voyageurs: widget.voyageurs,
+          formule: _formule,
         );
+
+        Navigator.pop(context, reservation);
+
+  // TODO 2 : fermer l'écran ET renvoyer reservation
       }
 
 

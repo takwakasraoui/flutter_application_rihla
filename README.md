@@ -71,4 +71,11 @@ Q1:
 Parce que l'utilisateur doit choisir une date dans le calendrier. Sans readOnly, il pourrait saisir manuellement un texte ou une date invalide.
 Q2:
 Parce que _total est un getter : il recalcule sa valeur à partir de _prixParPersonne et du nombre de voyageurs chaque fois qu'on y accède. setState provoque la reconstruction de l'écran.
+
+Palier5:
+Q1:
+reservation vaut null, car Navigator.pop(context) ferme le formulaire sans retourner de résultat.
+Q2:
+VS Code affiche un avertissement use_build_context_synchronously. Il signifie qu'on utilise context après un await, alors que le widget peut avoir été supprimé. mounted vérifie que le widget existe toujours avant d'utiliser context.
 Q3:
+Une boîte de dialogue est aussi une route dans la pile de navigation. Navigator.pop(context) permet donc de la fermer et de revenir à l'écran précédent.
