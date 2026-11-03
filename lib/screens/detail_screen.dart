@@ -80,12 +80,15 @@ class _DetailScreenState extends State<DetailScreen> {
             // Image et boutons superposés
             Stack(
               children: [
-                Image.asset(
+              Hero(
+                tag: 'image-${widget.destination.nom}',
+                child: Image.asset(
                   destination.image,
                   height: 340,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
+              ),
                 Positioned(
                   top: 16,
                   left: 16,
