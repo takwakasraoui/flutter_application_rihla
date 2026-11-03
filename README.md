@@ -50,3 +50,10 @@ HeroBanner ne change pas selon la catégorie choisie.
 Palier6:
 Exercice : ValueKey(d.nom) permet à Flutter d'associer l'état à la bonne carte lors du filtrage.Sans Key, l'état peut être associé à une autre carte
 
+Palier2:
+Q1:
+Oui, le filtre reste actif car HomeScreen reste dans la pile. Navigator.pop revient simplement à l'écran précédent.
+Q2:
+DetailScreen reçoit destination avec un paramètre.C'est le passage de paramètres utilisé au TP3.
+Q3:
+Sans clipBehavior, les coins arrondis ne découpent plus correctement le contenu qui dépasse de la carte.
