@@ -79,3 +79,13 @@ Q2:
 VS Code affiche un avertissement use_build_context_synchronously. Il signifie qu'on utilise context après un await, alors que le widget peut avoir été supprimé. mounted vérifie que le widget existe toujours avant d'utiliser context.
 Q3:
 Une boîte de dialogue est aussi une route dans la pile de navigation. Navigator.pop(context) permet donc de la fermer et de revenir à l'écran précédent.
+
+
+TP5:
+
+
+Palier0:
+Q1:Il renvoie le code 404 Not Found, qui appartient à la famille des erreurs côté client. Cela signifie que la destination demandée n'existe pas.
+Q2:C'est le serveur json-server qui a généré automatiquement l'ID de la réservation.
+Q3:GET sert à récupérer des données, donc elle n'a pas besoin de corps. POST sert à envoyer de nouvelles données au serveur, donc elle contient un corps avec les informations à ajouter.
+
