@@ -94,3 +94,11 @@ Q1:
 factory permet de créer et retourner un objet Destination à partir des données JSON.
 Q2: Une erreur de type se produit, car prix attend un num alors que "420" est une String.
 Q3:Parce que la requête HTTP est asynchrone.Future indique que la liste sera disponible plus tard,après la réponse du serveur.
+
+Palier3:
+Q1:
+Parce que sa valeur sera initialisée dans initState(),avant que le widget utilise cette variable.
+Q2:
+L'application ne gérerait pas correctement l'erreur réseau.Elle risquerait d'afficher un écran vide ou de provoquer une erreur si on utilise snapshot.data sans vérifier l'erreur.
+Q3:
+ Non, car les destinations sont déjà chargées.Le filtrage se fait localement avec la méthode _filtrer().

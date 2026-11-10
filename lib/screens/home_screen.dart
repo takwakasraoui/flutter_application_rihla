@@ -6,6 +6,7 @@ import '../widgets/hero_banner.dart';
 import '../data/destinations.dart';
 import '../widgets/destination_card.dart';
 import '../widgets/section_title.dart';
+import '../services/api_service.dart';
 class HomeScreen extends StatefulWidget { 
   const HomeScreen({super.key});
 
@@ -16,15 +17,34 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _categorie = 'Tout';
   int _onglet = 0;
-  List<Destination> get _filtrees {
-    if (_categorie == 'Tout') {
-      return destinations;
-    }
-
-    return destinations
-        .where((d) => d.categorie == _categorie)
-        .toList();
+  late Future<List<Destination>> _futurDestinations;
+  
+  List<Destination> _filtrer(List<Destination> toutes) {
+  if (_categorie == 'Tout') {
+    return toutes;
   }
+
+  return toutes
+      .where((d) => d.categorie == _categorie)
+      .toList();
+}
+
+   @override
+  void initState() {
+    super.initState();
+    // TODO 1 : lancer la requête et stocker le Future
+    _futurDestinations = ApiService.getDestinations();
+  }
+
+  Future<void> _recharger() async {
+  final futur = ApiService.getDestinations();
+  setState(() {
+    _futurDestinations = futur;   // FutureBuilder écoute le nouveau Future
+  });
+  try {
+    await futur;                  // RefreshIndicator attend la fin
+  } catch (_) {}                  // l'erreur est affichée par FutureBuilder
+}
 
 
 
@@ -32,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override Widget build(BuildContext context) {
         return Scaffold(
         body: _onglet == 0
-            ? _construireAccueil()
+            ?_construireExplorer()
             : const Center(
                 child: Text('Bientôt disponible'),
               ),
@@ -64,9 +84,40 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    Widget _construireAccueil() {
+    Widget _construireExplorer() {
+  return FutureBuilder<List<Destination>>(
+    future: _futurDestinations,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      if (snapshot.hasError) {
+        return ErreurReseau(
+          message: snapshot.error.toString(),
+          onReessayer: () {
+            setState(() {
+              _futurDestinations = ApiService.getDestinations();
+            });
+          },
+        );
+      }
+
+      final destinations = snapshot.data ?? [];
+
+      return RefreshIndicator(
+        onRefresh: _recharger,
+        child: _construireAccueil(destinations),
+      );
+    },
+  );
+}
+
+    Widget _construireAccueil(List<Destination> destinations) {
     return  SafeArea( 
-        child: ListView( padding: const EdgeInsets.all(20),
+        child: ListView( padding: const EdgeInsets.all(20),physics: const AlwaysScrollableScrollPhysics(),
         children: [ 
           //const Text('Takwa'),
           const HomeHeader(prenom: 'takwa'),
@@ -100,11 +151,13 @@ class _HomeScreenState extends State<HomeScreen> {
             titre: 'Populaires',
             action: 'Voir tout',
           ),
-          HeroBanner(destination: destinations.first),
-          for (final d in _filtrees)
-            DestinationCard(
-              key:ValueKey(d.nom),
-              destination: d),
+          if (destinations.isNotEmpty)
+            HeroBanner(destination: destinations.first),
+              for (final d in _filtrer(destinations))
+                  DestinationCard(
+                    key: ValueKey(d.id),
+                    destination: d,
+                  ),
         
         ], 
         ),
@@ -114,4 +167,40 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
 
+}
+
+class ErreurReseau extends StatelessWidget {
+  final String message;
+  final VoidCallback onReessayer;
+ 
+  const ErreurReseau({super.key, required this.message, required this.onReessayer});
+ 
+  @override
+  Widget build(BuildContext context) {
+    // TODO 4 : Column centrée : Icon(Icons.cloud_off) en couleur d'erreur,
+    //          le message, « Vérifiez que json-server est lancé. »,
+    //          et un FilledButton.tonalIcon « Réessayer » qui appelle onReessayer
+    return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.cloud_off,
+          size: 60,
+          color: Theme.of(context).colorScheme.error,
+        ),
+        const SizedBox(height: 16),
+        Text(message),
+        const SizedBox(height: 8),
+        const Text('Vérifiez que json-server est lancé.'),
+        const SizedBox(height: 16),
+        FilledButton.tonalIcon(
+          onPressed: onReessayer,
+          icon: const Icon(Icons.refresh),
+          label: const Text('Réessayer'),
+        ),
+      ],
+    ),
+  );
+  }
 }
