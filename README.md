@@ -89,3 +89,8 @@ Q1:Il renvoie le code 404 Not Found, qui appartient à la famille des erreurs c�
 Q2:C'est le serveur json-server qui a généré automatiquement l'ID de la réservation.
 Q3:GET sert à récupérer des données, donc elle n'a pas besoin de corps. POST sert à envoyer de nouvelles données au serveur, donc elle contient un corps avec les informations à ajouter.
 
+Palier2:
+Q1:
+factory permet de créer et retourner un objet Destination à partir des données JSON.
+Q2: Une erreur de type se produit, car prix attend un num alors que "420" est une String.
+Q3:Parce que la requête HTTP est asynchrone.Future indique que la liste sera disponible plus tard,après la réponse du serveur.
