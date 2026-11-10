@@ -102,3 +102,11 @@ Q2:
 L'application ne gérerait pas correctement l'erreur réseau.Elle risquerait d'afficher un écran vide ou de provoquer une erreur si on utilise snapshot.data sans vérifier l'erreur.
 Q3:
  Non, car les destinations sont déjà chargées.Le filtrage se fait localement avec la méthode _filtrer().
+
+ Palier4:
+ Q1:
+Pour éviter de répéter toutes les informations de la destination.
+Q2:
+Le serveur peut ne pas reconnaître le corps comme des données JSON.
+Q3:
+Pour vérifier que l'écran existe encore avant d'utiliser context.

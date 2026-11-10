@@ -4,6 +4,7 @@ import '../models/destination.dart';
 import '../widgets/favorite_button.dart';
 import 'reservation_screen.dart';
 import '../models/reservation.dart';
+import '../services/api_service.dart';
 class DetailScreen extends StatefulWidget {
   final Destination destination;
 
@@ -21,49 +22,70 @@ class _DetailScreenState extends State<DetailScreen> {
 
 
 
-  Future<void> _reserver() async {
-        final reservation = await Navigator.push<Reservation>(
-          context,
+ Future<void> _reserver() async {
+  final reservation = await Navigator.push<Reservation>(
+            context,
           MaterialPageRoute(
             builder: (context) => ReservationScreen(
               destination: widget.destination,
               voyageurs: _voyageurs,
             ),
           ),
-        );
+        );  // inchangé
+  if (reservation == null) return;
+  if (!mounted) return;
+ 
+  final String id;
+  try {
+    id = await ApiService.creerReservation(reservation); 
+    // TODO 5 : appeler ApiService.creerReservation (sans oublier await)
+  } catch (e) {
+    if (!mounted) return;
+    // TODO 6 : SnackBar rouge « Envoi impossible : json-server est-il lancé ? »
+        ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text(
+          'Envoi impossible : json-server est-il lancé ?',
+        ),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      ),
+    );
+    return;   // pas de confirmation si rien n'est enregistré
+  }
+ 
+  if (!mounted) return;
+    await showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      icon: const Icon(
+        Icons.check_circle,
+        color: Colors.green,
+        size: 48,
+      ),
+      title: const Text('Réservation confirmée'),
+      content: Text(
+        'Nom : ${reservation.nom}\n'
+        'Destination : ${reservation.destination.nom}\n'
+        'Voyageurs : ${reservation.voyageurs}\n'
+        'Formule : ${reservation.formule}\n'
+        'Total : ${reservation.total} DT\n'
+        'E-mail : ${reservation.email}\n'
+        'N° de réservation : $id',
+      ),
+      actions: [
+        FilledButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Parfait'),
+        ),
+      ],
+    ),
+  );  // ajouter « N° de réservation : $id »
+}
 
-        // TODO 3 : si aucune réservation n'est renvoyée
-        if (reservation == null) return;
 
-        // TODO 4 : vérifier que l'écran existe toujours
-        if (!mounted) return;
 
-        await showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-              size: 48,
-            ),
-            title: const Text('Réservation confirmée'),
-            content: Text(
-              'Nom : ${reservation.nom}\n'
-              'Destination : ${reservation.destination.nom}\n'
-              'Voyageurs : ${reservation.voyageurs}\n'
-              'Formule : ${reservation.formule}\n'
-              'Total : ${reservation.total} DT\n'
-              'E-mail : ${reservation.email}',
-            ),
-            actions: [
-              FilledButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Parfait'),
-              ),
-            ],
-          ),
-        );
-      }
+
+
 
   @override
   Widget build(BuildContext context) {
