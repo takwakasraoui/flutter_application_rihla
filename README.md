@@ -128,5 +128,9 @@ q2:
 Parce que les objets peuvent changer après le rechargement JSON, mais leurs identifiants restent les mêmes.
 q3:
 Parce qu'ils sont stockés uniquement en mémoire et non dans une base de données.
-q4:
 
+Partie4:
+Q1:
+Parce que les modifications des deux branches ne concernaient pas les mêmes lignes. Git a donc pu fusionner automatiquement les changements.
+Q2:
+Le fichier Dart contient un marqueur Git qui n'est pas du code valide. Cela provoque une erreur de compilation. Il faut supprimer tous les marqueurs de conflit.
