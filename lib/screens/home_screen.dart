@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_rihla/models/destination.dart';
+import 'package:provider/provider.dart';
 import '../widgets/home_header.dart';
 import '../widgets/search_box.dart';
 import '../widgets/hero_banner.dart';
@@ -7,6 +8,9 @@ import '../data/destinations.dart';
 import '../widgets/destination_card.dart';
 import '../widgets/section_title.dart';
 import '../services/api_service.dart';
+import 'favoris_screen.dart';
+import '../providers/favoris_model.dart';
+
 class HomeScreen extends StatefulWidget { 
   const HomeScreen({super.key});
 
@@ -50,12 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   @override Widget build(BuildContext context) {
+    // TODO : récupérer le nombre de favoris avec context.watch<FavorisModel>()
+    final nombreFavoris = context.watch<FavorisModel>().nombre;
         return Scaffold(
-        body: _onglet == 0
-            ?_construireExplorer()
-            : const Center(
+        body: switch (_onglet) {
+            0 => _construireExplorer(),
+            1 => const FavorisScreen(),
+            _ => const Center(
                 child: Text('Bientôt disponible'),
               ),
+          },
         bottomNavigationBar: NavigationBar(
           selectedIndex: _onglet,
           onDestinationSelected: (index) {
@@ -63,17 +71,25 @@ class _HomeScreenState extends State<HomeScreen> {
               _onglet = index;
             });
           },
-          destinations: const [
+          destinations: [
             NavigationDestination(
               icon: Icon(Icons.explore_outlined),
               selectedIcon: Icon(Icons.explore),
               label: 'Explorer',
             ),
-            NavigationDestination(
-              icon: Icon(Icons.favorite_border),
-              selectedIcon: Icon(Icons.favorite),
-              label: 'Favoris',
-            ),
+             NavigationDestination(
+                icon: Badge(
+                  isLabelVisible: nombreFavoris > 0,
+                  label: Text('$nombreFavoris'),
+                  child: Icon(Icons.favorite_border),
+                ),
+                selectedIcon: Badge(
+                  isLabelVisible: nombreFavoris > 0,
+                  label: Text('$nombreFavoris'),
+                  child: Icon(Icons.favorite),
+                ),
+                label: 'Favoris',
+              ),
             NavigationDestination(
               icon: Icon(Icons.person_outline),
               selectedIcon: Icon(Icons.person),

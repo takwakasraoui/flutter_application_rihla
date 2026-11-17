@@ -118,3 +118,15 @@ Je peux donc corriger les erreurs sur ma branche sans affecter la version stable
 
 Partie 2.4 : FavoriteButton et Provider:
 watch écoute les changements du modèle et actualise l'interface, tandis que read accède au modèle sans écouter les changements, notamment pour déclencher une action.
+Suggestion Copilot modifiée :
+J'ai ajouté isLabelVisible: nombreFavoris > 0 aux deux badges pour masquer le nombre lorsqu'il n'y a aucun favori.
+
+
+q1:
+FavoriteButton est un StatelessWidget parce qu'il ne gère pas son propre état. Il utilise context.watch<FavorisModel>() pour écouter les changements du modèle Provider. Quand les favoris changent, Flutter reconstruit automatiquement le widget.
+q2:
+Parce que les objets peuvent changer après le rechargement JSON, mais leurs identifiants restent les mêmes.
+q3:
+Parce qu'ils sont stockés uniquement en mémoire et non dans une base de données.
+q4:
+
