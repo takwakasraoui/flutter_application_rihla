@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: Text('$nombreFavoris'),
                   child: Icon(Icons.favorite),
                 ),
-                label: 'Favoris',
+                label: 'Mes voyages',
               ),
             NavigationDestination(
               icon: Icon(Icons.person_outline),
