@@ -115,3 +115,6 @@ Pour vérifier que l'écran existe encore avant d'utiliser context.
 Partie1:
 q1:Si je casse l'application sur la branche feature/favoris, la branche main reste intacte. Les modifications effectuées sur feature/favoris sont séparées de celles de main.
 Je peux donc corriger les erreurs sur ma branche sans affecter la version stable de main
+
+Partie 2.4 : FavoriteButton et Provider:
+watch écoute les changements du modèle et actualise l'interface, tandis que read accède au modèle sans écouter les changements, notamment pour déclencher une action.
