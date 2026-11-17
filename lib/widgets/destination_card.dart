@@ -95,7 +95,7 @@ class DestinationCard extends StatelessWidget {
                           color: cs.primary,
                         ),
                       ),
-                      const FavoriteButton(),
+                      FavoriteButton(destination: destination),
                     ],
                   ),
                 ],

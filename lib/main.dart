@@ -1,9 +1,17 @@
 //lib/main.dart
  import 'package:flutter/material.dart'; 
  import 'screens/home_screen.dart'; 
+ import 'package:provider/provider.dart'; import 'providers/favoris_model.dart';
  //import 'screens/detail_screen.dart';
  //import 'data/destinations.dart';
- void main() { runApp(const RihlaApp()); } 
+ void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => FavorisModel(),
+      child: const RihlaApp(),
+    ),
+  );
+}
  class RihlaApp extends StatelessWidget { 
   const RihlaApp({super.key});
    @override Widget build(BuildContext context) { 

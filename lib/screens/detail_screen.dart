@@ -130,7 +130,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   right: 16,
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: const FavoriteButton(),
+                    child: FavoriteButton(destination: destination),
                   ),
                 ),
               ],
