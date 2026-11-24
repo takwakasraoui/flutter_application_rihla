@@ -143,7 +143,34 @@ label: 'Mes voyages / Réservations',
 
       return RefreshIndicator(
         onRefresh: _recharger,
-        child: _construireAccueil(destinations),
+        child: Column(
+          children: [
+            if (ApiService.depuisCache)
+             Container(
+                width: double.infinity,
+                color: Theme.of(context).colorScheme.tertiaryContainer,
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.wifi_off,
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Hors connexion : données enregistrées',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onTertiaryContainer,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            Expanded(
+              child: _construireAccueil(destinations),
+            ),
+          ],
+        ),
       );
     },
   );

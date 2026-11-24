@@ -148,3 +148,8 @@ Q4/Parce que les favoris seraient bien chargés en mémoire, mais les écrans qu
 Palier2:
 Copilot m'a proposé une solution pour gérer le thème.
 J'ai adapté son code pour utiliser context.watch<ReglagesModel>() afin que l'interface change automatiquement de thème.
+
+Palier3:
+Q1/Pour éviter de sauvegarder une réponse incorrecte du serveur.
+Q2/L'écran d'erreur, car aucun cache n'existe encore.
+Q3/Il relance l'erreur pour qu'elle soit récupérée par le FutureBuilder, qui affiche l'écran d'erreur.
