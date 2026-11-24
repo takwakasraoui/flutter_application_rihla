@@ -9,14 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
  
 class ApiService {
   static const _cleCache = 'cache_destinations';
+  static const _cleDateCache = 'date_cache_destinations';
+  static String? dateDernierChargement;
   static bool depuisCache = false;
   static Uri _url(String chemin) => Uri.parse('${ApiConfig.baseUrl}$chemin');
 
   static List<Destination> _decoder(String corps) => 
   (jsonDecode(corps) as List).map((e) => Destination.fromJson(e)).toList();
  
- static Future<List<Destination>> getDestinations() async {
-      final prefs = await SharedPreferences.getInstance();
+  static Future<List<Destination>> getDestinations() async {
+    final prefs = await SharedPreferences.getInstance();
 
       try {
         final reponse = await http
@@ -29,7 +31,13 @@ class ApiService {
 
         final corps = utf8.decode(reponse.bodyBytes);
 
+        // Sauvegarder les destinations
         await prefs.setString(_cleCache, corps);
+
+        // Sauvegarder la date du dernier chargement réussi
+        final date = DateTime.now().toIso8601String();
+        await prefs.setString(_cleDateCache, date);
+        dateDernierChargement = date;
 
         depuisCache = false;
         return _decoder(corps);
@@ -40,6 +48,9 @@ class ApiService {
         if (cache == null) {
           rethrow;
         }
+
+        // Récupérer la date sauvegardée
+        dateDernierChargement = prefs.getString(_cleDateCache);
 
         depuisCache = true;
         return _decoder(cache);

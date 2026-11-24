@@ -29,4 +29,18 @@ class ReglagesModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  // Effacer les données sauvegardées
+    Future<void> effacerDonnees() async {
+      final prefs = await SharedPreferences.getInstance();
+      
+      await prefs.remove('favoris');
+      await prefs.remove('cache_destinations');
+      await prefs.remove('date_cache_destinations');
+      await prefs.remove(_cle);
+
+      _sombre = false;
+
+      notifyListeners();
+    }
 }

@@ -51,6 +51,39 @@ class _HomeScreenState extends State<HomeScreen> {
   } catch (_) {}                  // l'erreur est affichée par FutureBuilder
 }
 
+Future<void> _confirmerEffacement() async {
+  final confirmer = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Effacer les données ?'),
+      content: const Text(
+        'Supprimer les favoris, le cache et le thème enregistré ?',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text('Annuler'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text('Effacer'),
+        ),
+      ],
+    ),
+  );
+
+  if (confirmer == true) {
+    await context.read<FavorisModel>().effacer();
+    await context.read<ReglagesModel>().effacerDonnees();
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Données effacées')),
+    );
+  }
+}
+
 
 
 
@@ -78,8 +111,12 @@ class _HomeScreenState extends State<HomeScreen> {
   body: switch (_onglet) {
             0 => _construireExplorer(),
             1 => const FavorisScreen(),
-            _ => const Center(
-                child: Text('Bientôt disponible'),
+            _ => Center(
+                child: FilledButton.tonalIcon(
+                  onPressed: _confirmerEffacement,
+                  icon: const Icon(Icons.delete_outline),
+                  label: const Text('Effacer les données'),
+                ),
               ),
           },
         bottomNavigationBar: NavigationBar(
@@ -157,12 +194,27 @@ label: 'Mes voyages / Réservations',
                       color: Theme.of(context).colorScheme.onTertiaryContainer,
                     ),
                     const SizedBox(width: 10),
-                    Text(
-                      'Hors connexion : données enregistrées',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onTertiaryContainer,
+                   Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Hors connexion : données enregistrées',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onTertiaryContainer,
+                              ),
+                            ),
+                            if (ApiService.dateDernierChargement != null)
+                              Text(
+                                'Dernier chargement : ${DateTime.parse(ApiService.dateDernierChargement!).day}/${DateTime.parse(ApiService.dateDernierChargement!).month}/${DateTime.parse(ApiService.dateDernierChargement!).year} à ${DateTime.parse(ApiService.dateDernierChargement!).hour}:${DateTime.parse(ApiService.dateDernierChargement!).minute.toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
