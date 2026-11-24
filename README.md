@@ -144,3 +144,7 @@ Q2/FavorisModel() crée une nouvelle instance du modèle.
 Le modèle récupère les favoris enregistrés et les place dans _favoris
 Q3/Cette instruction crée un modèle et appelle charger(), mais elle retourne le résultat de charger(), c'est-à-dire un Future<void>, et non l'instance de FavorisModel.
 Q4/Parce que les favoris seraient bien chargés en mémoire, mais les écrans qui utilisent Provider ne seraient pas informés du changement. Ils pourraient donc continuer à afficher une ancienne liste vide jusqu'à une autre modification qui déclenche une notification
+
+Palier2:
+Copilot m'a proposé une solution pour gérer le thème.
+J'ai adapté son code pour utiliser context.watch<ReglagesModel>() afin que l'interface change automatiquement de thème.
