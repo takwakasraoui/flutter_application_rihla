@@ -134,3 +134,13 @@ Q1:
 Parce que les modifications des deux branches ne concernaient pas les mêmes lignes. Git a donc pu fusionner automatiquement les changements.
 Q2:
 Le fichier Dart contient un marqueur Git qui n'est pas du code valide. Cela provoque une erreur de compilation. Il faut supprimer tous les marqueurs de conflit.
+
+
+TP7:
+Palier1:
+Q1/Parce que SharedPreferences ne stocke pas directement les objets Dart. Il accepte des types simples comme String, int, bool et des listes de chaînes. On transforme donc chaque objet Destination en JSON avec toJson() et jsonEncode(), puis on le reconstruit avec jsonDecode() et fromJson()
+Q2/FavorisModel() crée une nouvelle instance du modèle.
+..charger() appelle immédiatement la méthode charger() sur cette instance.
+Le modèle récupère les favoris enregistrés et les place dans _favoris
+Q3/Cette instruction crée un modèle et appelle charger(), mais elle retourne le résultat de charger(), c'est-à-dire un Future<void>, et non l'instance de FavorisModel.
+Q4/Parce que les favoris seraient bien chargés en mémoire, mais les écrans qui utilisent Provider ne seraient pas informés du changement. Ils pourraient donc continuer à afficher une ancienne liste vide jusqu'à une autre modification qui déclenche une notification

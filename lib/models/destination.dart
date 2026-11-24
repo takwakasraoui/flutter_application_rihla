@@ -1,13 +1,13 @@
-/// Modèle d'une destination touristique.
-/// Tous les champs sont `final` : une destination ne change pas après sa création.
+
+
 class Destination {
   final String id;
   final String nom;
   final String region;
-  final String categorie; // 'Plage', 'Désert' ou 'Patrimoine'
-  final String image; // chemin de l'image dans assets/
-  final double note; // sur 5
-  final int prix; // en dinars, par personne
+  final String categorie;
+  final String image;
+  final double note;
+  final int prix;
   final String duree;
   final String description;
 
@@ -22,7 +22,9 @@ class Destination {
     required this.duree,
     required this.description,
   });
-    factory Destination.fromJson(Map<String, dynamic> json) {
+
+ 
+  factory Destination.fromJson(Map<String, dynamic> json) {
     return Destination(
       id: json['id'].toString(),
       nom: json['nom'] as String,
@@ -34,5 +36,20 @@ class Destination {
       duree: json['duree'] as String,
       description: json['description'] as String,
     );
+  }
+
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nom': nom,
+      'region': region,
+      'categorie': categorie,
+      'image': image,
+      'note': note,
+      'prix': prix,
+      'duree': duree,
+      'description': description,
+    };
   }
 }

@@ -7,7 +7,7 @@
  void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => FavorisModel(),
+      create: (_) => FavorisModel()..charger(),
       child: const RihlaApp(),
     ),
   );
