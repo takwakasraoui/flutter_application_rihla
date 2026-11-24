@@ -4,21 +4,50 @@
  import 'package:provider/provider.dart'; import 'providers/favoris_model.dart';
  //import 'screens/detail_screen.dart';
  //import 'data/destinations.dart';
- void main() {
+ import 'providers/reglages_model.dart';
+void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => FavorisModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => FavorisModel()..charger(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ReglagesModel()..charger(),
+        ),
+      ],
       child: const RihlaApp(),
     ),
   );
 }
  class RihlaApp extends StatelessWidget { 
   const RihlaApp({super.key});
-   @override Widget build(BuildContext context) { 
-    return MaterialApp(
-       title: 'Rihla',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData( useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0E7C86)), ),
-        home: const HomeScreen(),
-        ); } }
+ @override
+Widget build(BuildContext context) {
+  final sombre = context.watch<ReglagesModel>().sombre;
+  const graine = Color(0xFF0E7C86);
+
+  return MaterialApp(
+    title: 'Rihla',
+    debugShowCheckedModeBanner: false,
+
+    theme: ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: graine,
+      ),
+    ),
+
+    darkTheme: ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: graine,
+        brightness: Brightness.dark,
+      ),
+    ),
+
+    themeMode: sombre ? ThemeMode.dark : ThemeMode.light,
+
+    home: const HomeScreen(),
+  );
+}}
